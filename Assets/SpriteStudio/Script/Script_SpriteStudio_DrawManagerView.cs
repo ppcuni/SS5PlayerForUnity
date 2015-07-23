@@ -7,30 +7,19 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 [ExecuteInEditMode]
 [System.Serializable]
 public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 {
-	/* Classes */
-	private class InformationDrawObject
-	{
-		public Script_SpriteStudio_PartsRoot PartsRoot = null;
-		public float Priority = 0.0f;
-	}
-
 	/* Valiable & Propaties */
 	/* MEMO: Don't set/get "KindRenderQueueBase" and "OffsetDrawQueue". */
 	/*       "KindRenderQueueBase" and "OffsetDrawQueue" are defined public for Setting on Inspector. */
 	public Library_SpriteStudio.DrawManager.KindDrawQueue KindRenderQueueBase;
 	public int OffsetDrawQueue;
 
-#if false
-	/* MEMO: Non-Generic List-Class */
-	private ArrayList DrawEntryPartsRoot;
-#else
-	private List<InformationDrawObject> DrawEntryPartsRoot;
-#endif
+	private List<Script_SpriteStudio_PartsRoot> DrawEntryPartsRoot = new List<Script_SpriteStudio_PartsRoot>();
 	private Library_SpriteStudio.DrawManager.ArrayListMeshDraw arrayListMeshDraw;
 	public Library_SpriteStudio.DrawManager.ArrayListMeshDraw ArrayListMeshDraw
 	{
@@ -43,35 +32,11 @@ public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 	/* Functions */
 	void Start()
 	{
-
-#if false
-		/* MEMO: Non-Generic List-Class */
-		DrawEntryPartsRoot = new ArrayList();
-		DrawEntryPartsRoot.Clear();
-#else
-		DrawEntryPartsRoot = new List<InformationDrawObject>();
-		DrawEntryPartsRoot.Clear();
-#endif
-
 		arrayListMeshDraw = new Library_SpriteStudio.DrawManager.ArrayListMeshDraw();
 		arrayListMeshDraw.BootUp();
 		arrayListMeshDraw.RenderQueueSet(KindRenderQueueBase, OffsetDrawQueue);
 	}
 	
-	void Update()
-	{
-		/* Boot-Check */
-		if(null == DrawEntryPartsRoot)
-		{
-#if false
-			/* MEMO: Non-Generic List-Class */
-			DrawEntryPartsRoot = new ArrayList();
-#else
-			DrawEntryPartsRoot = new List<InformationDrawObject>();
-#endif
-		}
-	}
-
 	void LateUpdate()
 	{
 		/* Clear Finalize ListDrawMesh */
@@ -84,19 +49,11 @@ public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 		arrayListMeshDraw.Clear();
 
 		/* Collect Draw-Parts from Root-Parts */
-		InformationDrawObject DrawObject = null;
 		Library_SpriteStudio.DrawManager.ArrayListMeshDraw ArrayListMeshDrawObject = null;
 		Library_SpriteStudio.DrawManager.ListMeshDraw ListMeshDraw = null;
-		int Count = DrawEntryPartsRoot.Count;
-		for(int i=0; i<Count; i++)
+		foreach(var DrawObject in DrawEntryPartsRoot.OrderByDescending(x => x.GetDisplayOrder()))
 		{
-#if false
-			/* MEMO: Non-Generic List-Class */
-			DrawObject = DrawEntryPartsRoot[i] as InformationDrawObject;
-#else
-			DrawObject = DrawEntryPartsRoot[i];
-#endif
-			ArrayListMeshDrawObject = DrawObject.PartsRoot.ArrayListMeshDraw;
+			ArrayListMeshDrawObject = DrawObject.ArrayListMeshDraw;
 			int CountList = ArrayListMeshDrawObject.TableListMesh.Count;
 			for(int j=0; j<CountList; j++)
 			{
@@ -111,7 +68,7 @@ public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 			}
 
 			/* Clear Original Draw-List */
-			DrawObject.PartsRoot.DrawListClear();
+			DrawObject.DrawListClear();
 		}
 		DrawEntryPartsRoot.Clear();
 
@@ -172,7 +129,7 @@ public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 #endif
 		for(int i=0; i<(TableListMesh.Count - 1); )
 		{
-			Count = i + 1;	/* "Count" is temporary */
+			var Count = i + 1;	/* "Count" is temporary */
 #if false
 			/* MEMO: Non-Generic List-Class */
 			ListMeshDraw = TableListMesh[i] as Library_SpriteStudio.DrawManager.ListMeshDraw;
@@ -195,9 +152,8 @@ public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 
 		/* Counting Meshes */
 		TableListMesh = arrayListMeshDraw.TableListMesh;
-		Count = TableListMesh.Count;
 		int CountMesh = 0;
-		for(int i=0; i<Count; i++)
+		for(int i=0; i< TableListMesh.Count; i++)
 		{
 #if false
 			/* MEMO: Non-Generic List-Class */
@@ -216,59 +172,7 @@ public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 
 	internal void DrawEntryObject(Script_SpriteStudio_PartsRoot PartsRootDrawObject)
 	{
-		/* Boot-Check */
-		if(null == DrawEntryPartsRoot)
-		{
-#if false
-			/* MEMO: Non-Generic List-Class */
-			DrawEntryPartsRoot = new ArrayList();
-			DrawEntryPartsRoot.Clear();
-#else
-			DrawEntryPartsRoot = new List<InformationDrawObject>();
-			DrawEntryPartsRoot.Clear();
-#endif
-		}
-
-		/* Get Priority */
-		Matrix4x4 MatrixWorld = PartsRootDrawObject.transform.localToWorldMatrix;
-		Vector3 OriginWorld = MatrixWorld.MultiplyPoint3x4(Vector3.zero);
-
-		/* Add Draw-Object (Not "Instance"-Object) */
-		InformationDrawObject DrawObjectNew = new InformationDrawObject();
-		DrawObjectNew.PartsRoot = PartsRootDrawObject;
-		DrawObjectNew.Priority = OriginWorld.z;
-
-		/* Sort & Add Object */
-		int Count = DrawEntryPartsRoot.Count;
-		if(0 == Count)
-		{	/* First Object */
-			goto DrawEntryObject_Add;
-		}
-
-		InformationDrawObject DrawObject = null;
-		int Index = 0;
-		for(int i=0; i<Count; i++)
-		{
-#if false
-			/* MEMO: Non-Generic List-Class */
-			DrawObject = DrawEntryPartsRoot[i] as InformationDrawObject;
-#else
-			DrawObject = DrawEntryPartsRoot[i];
-#endif
-			if(DrawObject.Priority < DrawObjectNew.Priority)
-			{
-				goto DrawEntryObject_Insert;
-			}
-			Index++;
-		}
-
-	DrawEntryObject_Add:;
-		DrawEntryPartsRoot.Add(DrawObjectNew);
-		return;
-
-	DrawEntryObject_Insert:;
-		DrawEntryPartsRoot.Insert(Index, DrawObjectNew);
-		return;
+        DrawEntryPartsRoot.Add(PartsRootDrawObject);
 	}
 
 	void OnDestroy()
