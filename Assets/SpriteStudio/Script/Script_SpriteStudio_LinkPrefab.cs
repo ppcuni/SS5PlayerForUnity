@@ -37,7 +37,8 @@ public class Script_SpriteStudio_LinkPrefab : MonoBehaviour
 		}
 #else
 		PrefabLinkInstantiate();
-		PrefabLinkDeleteScript();
+		// You should not delete link prefab class. I can't change prefab if deleted.
+		//PrefabLinkDeleteScript();
 #endif
 	}
 
