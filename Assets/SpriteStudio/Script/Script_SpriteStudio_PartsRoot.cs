@@ -406,7 +406,6 @@ public class Script_SpriteStudio_PartsRoot : Library_SpriteStudio.PartsBase
 		}
 	}
 
-	private Camera InstanceCameraDraw;
 	private Script_SpriteStudio_DrawManagerView InstanceDrawManagerView;
 	private GameObject InstanceGameObjectControl = null;
 	private Script_SpriteStudio_PartsRoot partsRootOrigin = null;
@@ -436,7 +435,6 @@ public class Script_SpriteStudio_PartsRoot : Library_SpriteStudio.PartsBase
 
 	void Start()
 	{
-		InstanceCameraDraw = Library_SpriteStudio.Utility.CameraGetParent(gameObject);
 		InstanceDrawManagerView = Library_SpriteStudio.Utility.DrawManagerViewGetParent(gameObject);
 		rateOpacity = 1.0f;
 
@@ -483,10 +481,6 @@ public class Script_SpriteStudio_PartsRoot : Library_SpriteStudio.PartsBase
 		}
 
 		/* Boot-Check */
-		if(null == InstanceCameraDraw)
-		{
-			InstanceCameraDraw = Library_SpriteStudio.Utility.CameraGetParent(gameObject);
-		}
 		if(null == InstanceDrawManagerView)
 		{
 			InstanceDrawManagerView = Library_SpriteStudio.Utility.DrawManagerViewGetParent(gameObject);

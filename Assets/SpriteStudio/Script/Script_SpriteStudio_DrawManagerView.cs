@@ -25,7 +25,6 @@ public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 	public Library_SpriteStudio.DrawManager.KindDrawQueue KindRenderQueueBase;
 	public int OffsetDrawQueue;
 
-	private Camera InstanceCameraDraw;
 #if false
 	/* MEMO: Non-Generic List-Class */
 	private ArrayList DrawEntryPartsRoot;
@@ -44,7 +43,6 @@ public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 	/* Functions */
 	void Start()
 	{
-		InstanceCameraDraw = Library_SpriteStudio.Utility.CameraGetParent(gameObject);
 
 #if false
 		/* MEMO: Non-Generic List-Class */
@@ -63,10 +61,6 @@ public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 	void Update()
 	{
 		/* Boot-Check */
-		if(null == InstanceCameraDraw)
-		{
-			InstanceCameraDraw = Library_SpriteStudio.Utility.CameraGetParent(gameObject);
-		}
 		if(null == DrawEntryPartsRoot)
 		{
 #if false
@@ -217,7 +211,7 @@ public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 		/* Meshes Combine each Material & Set to MeshFilter/MeshRenderer */
 		MeshFilter InstanceMeshFilter = GetComponent<MeshFilter>();
 		MeshRenderer InstanceMeshRenderer = GetComponent<MeshRenderer>();
-		arrayListMeshDraw.MeshSetCombine(InstanceMeshFilter, InstanceMeshRenderer, InstanceCameraDraw, transform);
+		arrayListMeshDraw.MeshSetCombine(InstanceMeshFilter, InstanceMeshRenderer, transform);
 	}
 
 	internal void DrawEntryObject(Script_SpriteStudio_PartsRoot PartsRootDrawObject)

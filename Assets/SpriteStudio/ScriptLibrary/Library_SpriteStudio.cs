@@ -230,22 +230,6 @@ public static partial class Library_SpriteStudio
 			return(DataSpriteStudio);
 		}
 
-		public static Camera CameraGetParent(GameObject InstanceGameObject)
-		{
-			Transform InstanceTransform = InstanceGameObject.transform.parent;
-			Camera InstanceCamera = null;
-			while(null != InstanceTransform)
-			{
-				InstanceCamera = InstanceTransform.camera;
-				if(null != InstanceCamera)
-				{
-					break;
-				}
-				InstanceTransform = InstanceTransform.parent;
-			}
-			return(InstanceCamera);
-		}
-
 		public static Script_SpriteStudio_DrawManagerView DrawManagerViewGetParent(GameObject InstanceGameObject)
 		{
 			Transform InstanceTransform = InstanceGameObject.transform.parent;
@@ -1038,7 +1022,7 @@ public static partial class Library_SpriteStudio
 				return;
 			}
 
-			public void MeshSetCombine(MeshFilter InstanceMeshFilter, MeshRenderer InstanceMeshRenderer, Camera InstanceCamera, Transform InstanceTransform)
+			public void MeshSetCombine(MeshFilter InstanceMeshFilter, MeshRenderer InstanceMeshRenderer, Transform InstanceTransform)
 			{
 				if(null != tableListMesh)
 				{
