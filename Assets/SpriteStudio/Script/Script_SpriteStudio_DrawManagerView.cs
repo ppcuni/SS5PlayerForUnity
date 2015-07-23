@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 [ExecuteInEditMode]
 [System.Serializable]
-public class Script_SpriteStudio_DrawManagerView : MonoBehaviour
+public partial class Script_SpriteStudio_DrawManagerView : MonoBehaviour
 {
 	/* Classes */
 	private class InformationDrawObject

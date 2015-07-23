@@ -12,7 +12,7 @@ using UnityEditor;
 
 [ExecuteInEditMode]
 [System.Serializable]
-public class Script_SpriteStudio_PartsInstance : Library_SpriteStudio.SpriteBase
+public partial class Script_SpriteStudio_PartsInstance : Library_SpriteStudio.SpriteBase
 {
 	/* Variables & Propaties */
 	private Library_SpriteStudio.AnimationData spriteStudioData;

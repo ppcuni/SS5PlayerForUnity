@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 [ExecuteInEditMode]
 [System.Serializable]
-public class Script_SpriteStudio_PartsRoot : Library_SpriteStudio.PartsBase
+public partial class Script_SpriteStudio_PartsRoot : Library_SpriteStudio.PartsBase
 {
 	/* Constants */
 	public enum BitStatus
