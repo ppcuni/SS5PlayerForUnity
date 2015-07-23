@@ -2774,7 +2774,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnTriggerEnter)
 			{
-				functionOnTriggerEnter(collider, Pair);
+				functionOnTriggerEnter(GetComponent<Collider>(), Pair);
 			}
 		}
 
@@ -2782,7 +2782,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnTriggerEnd)
 			{
-				functionOnTriggerEnter(collider, Pair);
+				functionOnTriggerEnter(GetComponent<Collider>(), Pair);
 			}
 		}
 
@@ -2790,7 +2790,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnTriggerStay)
 			{
-				functionOnTriggerStay(collider, Pair);
+				functionOnTriggerStay(GetComponent<Collider>(), Pair);
 			}
 		}
 
@@ -2798,7 +2798,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnCollisionEnter)
 			{
-				functionOnCollisionEnter(collider, Contacts);
+				functionOnCollisionEnter(GetComponent<Collider>(), Contacts);
 			}
 		}
 
@@ -2806,7 +2806,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnCollisionEnd)
 			{
-				functionOnCollisionEnd(collider, Contacts);
+				functionOnCollisionEnd(GetComponent<Collider>(), Contacts);
 			}
 		}
 
@@ -2814,7 +2814,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnCollisionStay)
 			{
-				functionOnCollisionStay(collider, Contacts);
+				functionOnCollisionStay(GetComponent<Collider>(), Contacts);
 			}
 		}
 	}
