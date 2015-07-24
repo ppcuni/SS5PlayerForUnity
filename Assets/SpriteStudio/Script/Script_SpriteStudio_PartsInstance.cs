@@ -147,7 +147,7 @@ public class Script_SpriteStudio_PartsInstance : Library_SpriteStudio.SpriteBase
 			Script_SpriteStudio_PartsRoot PartsOrigin = scriptPartsRootSub.PartsRootOrigin;
 			if(null != PartsOrigin)
 			{
-				if(false == PartsOrigin.AnimationCheckPlay())
+				if(!PartsOrigin.AnimationCheckPlay() && scriptPartsRootSub.AnimationCheckPlay())
 				{	/* Parent is stopped */
 					scriptPartsRootSub.AnimationStop();
 				}
