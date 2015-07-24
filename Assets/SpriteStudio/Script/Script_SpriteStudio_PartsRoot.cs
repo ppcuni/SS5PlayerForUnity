@@ -13,6 +13,7 @@ using System.Collections.Generic;
 public class Script_SpriteStudio_PartsRoot : Library_SpriteStudio.PartsBase
 {
 	/* Constants */
+	[System.Flags]
 	public enum BitStatus
 	{
 		PLAYING = 0x800000,
@@ -28,7 +29,8 @@ public class Script_SpriteStudio_PartsRoot : Library_SpriteStudio.PartsBase
 		REDECODE_INSTANCE = 0x002000,
 
 		CLEAR = 0x000000,
-		MASK_INITIAL = (PLAYING | PAUSING | STYLE_REVERSE | PLAYING_REVERSE | PLAY_FIRST | REQUEST_PLAYEND | DECODE_USERDATA),
+		MASK_INITIAL = (PLAYING | PAUSING | STYLE_REVERSE | PLAYING_REVERSE | PLAY_FIRST | REQUEST_PLAYEND | DECODE_USERDATA | REDECODE_INSTANCE),
+		INITIAL = ~MASK_INITIAL,
 	};
 	public enum PlayStyle
 	{

@@ -23,4 +23,32 @@ public static class SpriteStudioExtensions
 
         return OriginWorld.z;
     }
+
+    /// <summary>
+    /// 親をたどって<see cref="Script_SpriteStudio_PartsRoot.BitStatus.REDECODE_INSTANCE"/>がtrueになっているかどうかをチェックする。
+    /// 再帰的にたどることで孫以降の<see cref="Script_SpriteStudio_PartsInstance"/>のフレーム遅延問題を起きないようにする。
+    /// </summary>
+    /// <param name="root"></param>
+    /// <returns></returns>
+    public static bool CheckRedecodeInstanceInParent(this Script_SpriteStudio_PartsRoot root)
+    {
+        if (0 != (root.Status & Script_SpriteStudio_PartsRoot.BitStatus.REDECODE_INSTANCE))
+            return true;
+
+        var parentInstance = root.transform.parent.GetComponent<Script_SpriteStudio_PartsInstance>();
+        if (parentInstance == null)
+            return false;
+
+        return parentInstance.ScriptRoot.CheckRedecodeInstanceInParent();
+    }
+
+    /// <summary>
+    /// アニメーションの再生開始フレームかどうか。
+    /// </summary>
+    /// <param name="root"></param>
+    /// <returns></returns>
+    public static bool IsFirstPlay(this Script_SpriteStudio_PartsRoot root)
+    {
+        return root.FrameNoPrevious == root.FrameNoStart;
+    }
 }

@@ -1597,7 +1597,8 @@ public static partial class Library_SpriteStudio
 				if(0 != (ScriptRoot.Status & Script_SpriteStudio_PartsRoot.BitStatus.DECODE_USERDATA))
 				{
 					int LoopCount = ScriptRoot.CountLoopThisTime;
-					bool FlagFirst = (0 != (ScriptRoot.Status & Script_SpriteStudio_PartsRoot.BitStatus.PLAY_FIRST)) ? true : false;
+					//bool FlagFirst = (0 != (ScriptRoot.Status & Script_SpriteStudio_PartsRoot.BitStatus.PLAY_FIRST)) ? true : false;
+					var FlagFirst = ScriptRoot.IsFirstPlay();
 					bool FlagReverse = (0 != (ScriptRoot.Status & Script_SpriteStudio_PartsRoot.BitStatus.PLAYING_REVERSE)) ? true : false;
 					bool FlagReversePrevious = ScriptRoot.FlagReversePrevious;
 					int FrameNoPrevious = (true == FlagFirst) ? ScriptRoot.FrameNoStart : (ScriptRoot.FrameNoPrevious + ((true == FlagReverse) ? -1 : 1));
@@ -1858,7 +1859,7 @@ public static partial class Library_SpriteStudio
 
 		UpdateInstanceData_PlayCommand_Force:;
 			{
-				if(0 != (ScriptRoot.Status & Script_SpriteStudio_PartsRoot.BitStatus.REDECODE_INSTANCE))
+				if (ScriptRoot.CheckRedecodeInstanceInParent())
 				{
 					PartsInstance.FrameNoPreviousUpdate = -1;
 				}
@@ -1897,6 +1898,8 @@ public static partial class Library_SpriteStudio
 													DataBody.LabelEnd,
 													DataBody.OffsetEnd
 												);
+				ScriptPartsRootSub.Status |= Script_SpriteStudio_PartsRoot.BitStatus.DECODE_USERDATA;
+				ScriptPartsRootSub.Status &= ~Script_SpriteStudio_PartsRoot.BitStatus.PLAY_FIRST;
 
 				int FrameCount = FrameNo - FrameNoInstanceBase;
 				FrameCount = (0 > FrameCount) ? 0 : FrameCount;
@@ -2758,7 +2761,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnTriggerEnter)
 			{
-				functionOnTriggerEnter(collider, Pair);
+				functionOnTriggerEnter(GetComponent<Collider>(), Pair);
 			}
 		}
 
@@ -2766,7 +2769,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnTriggerEnd)
 			{
-				functionOnTriggerEnter(collider, Pair);
+				functionOnTriggerEnter(GetComponent<Collider>(), Pair);
 			}
 		}
 
@@ -2774,7 +2777,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnTriggerStay)
 			{
-				functionOnTriggerStay(collider, Pair);
+				functionOnTriggerStay(GetComponent<Collider>(), Pair);
 			}
 		}
 
@@ -2782,7 +2785,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnCollisionEnter)
 			{
-				functionOnCollisionEnter(collider, Contacts);
+				functionOnCollisionEnter(GetComponent<Collider>(), Contacts);
 			}
 		}
 
@@ -2790,7 +2793,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnCollisionEnd)
 			{
-				functionOnCollisionEnd(collider, Contacts);
+				functionOnCollisionEnd(GetComponent<Collider>(), Contacts);
 			}
 		}
 
@@ -2798,7 +2801,7 @@ public static partial class Library_SpriteStudio
 		{
 			if(null != functionOnCollisionStay)
 			{
-				functionOnCollisionStay(collider, Contacts);
+				functionOnCollisionStay(GetComponent<Collider>(), Contacts);
 			}
 		}
 	}
